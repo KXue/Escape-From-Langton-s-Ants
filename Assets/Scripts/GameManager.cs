@@ -107,4 +107,13 @@ public class GameManager : MonoBehaviour {
             GameOver(true);
         }
     }
+	void Update()
+	{
+		if(Input.GetButtonDown("Cancel")){
+			Exit();
+		}
+	}
+	public void Exit(){
+		Application.Quit();
+	}
 }
