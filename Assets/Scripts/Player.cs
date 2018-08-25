@@ -4,39 +4,39 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     public CellularMap m_map;
-    int row, col;
+    public int m_row, m_col;
 	void Start()
 	{
-		m_map.WorldToGrid(transform.position, out row, out col);
+		m_map.WorldToGrid(transform.position, out m_row, out m_col);
 	}
 	// Update is called once per frame
 	void Update () {
 		bool playerMoved = false;
 		if(Input.GetButtonDown("Horizontal")){
-			int newCol = col;
+			int newCol = m_col;
 			if(Input.GetAxisRaw("Horizontal") > 0){
                 newCol++;
 			}
 			else if(Input.GetAxisRaw("Horizontal") < 0){
                 newCol--;
 			}
-			if(!m_map.GetTileState(ref row, ref newCol)){
-				col = newCol;
-				transform.position = m_map.GridToWorld(row, col);
+			if(!m_map.GetTileState(ref m_row, ref newCol)){
+				m_col = newCol;
+				transform.position = m_map.GridToWorld(m_row, m_col);
                 playerMoved = true;
 			}
 		}
 		else if(Input.GetButtonDown("Vertical")){
-			int newRow = row;
+			int newRow = m_row;
 			if(Input.GetAxisRaw("Vertical") > 0){
                 newRow--;
 			}
 			else if(Input.GetAxisRaw("Vertical") < 0){
                 newRow++;
 			}
-			if(!m_map.GetTileState(ref newRow, ref col)){
-                row = newRow;
-				transform.position = m_map.GridToWorld(row, col);
+			if(!m_map.GetTileState(ref newRow, ref m_col)){
+                m_row = newRow;
+				transform.position = m_map.GridToWorld(m_row, m_col);
                 playerMoved = true;
 			}
             

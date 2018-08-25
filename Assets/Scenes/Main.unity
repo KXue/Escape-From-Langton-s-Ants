@@ -222,8 +222,10 @@ MonoBehaviour:
   m_map: {fileID: 1621838421}
   m_playerPrefab: {fileID: 114571414027445152, guid: a872474092a8e1e418b827b02ec62e14,
     type: 2}
-  m_antPrefab: {fileID: 0}
-  m_exitPrefab: {fileID: 0}
+  m_antPrefab: {fileID: 114725855869452274, guid: 743a9e3325370fb4aaa33bd27cbbce1b,
+    type: 2}
+  m_exitPrefab: {fileID: 114668147600981618, guid: edc30d0c710cc7041a559d964c6de80f,
+    type: 2}
 --- !u!1001 &1615411401
 Prefab:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine;
 public enum CardinalDirections {RIGHT, UP, LEFT, DOWN, END}
 public class Helper{
 	// right, up, left, down (screen coordinates)
-	public static int[][] DIRECTIONS = {new int[]{1, 0}, new int[]{0, -1}, new int[]{-1, 0}, new int[]{0, 1}};
+	public static int[][] DIRECTIONS = {new int[]{0, 1}, new int[]{-1, 0}, new int[]{0, -1}, new int[]{1, 0}};
 	public static bool MapValue(bool[][] map, ref int row, ref int col, bool wrap){
 		if(wrap){
 			GetWrappedCoordinates(map, ref row, ref col);
@@ -31,7 +31,7 @@ public class Helper{
 		row = BetterMod(row, map.Length);
 		col = BetterMod(col, map[row].Length);
 	}
-	static int BetterMod(int x, int m) {
+	public static int BetterMod(int x, int m) {
 		int r = x%m;
 		return r<0 ? r+m : r;
 	}
