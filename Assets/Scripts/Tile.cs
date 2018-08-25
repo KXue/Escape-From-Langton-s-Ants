@@ -10,8 +10,10 @@ public class Tile : MonoBehaviour {
 			return m_isWall;
 		}
 		set{
-			m_isWall = value;
-			UpdateColour();
+			if(m_isWall != value){
+				m_isWall = value;
+				UpdateColour();
+			}
 		}
 	}
 	Renderer m_renderer;
@@ -23,9 +25,6 @@ public class Tile : MonoBehaviour {
 		UpdateColour();
 	}
 	void UpdateColour(){
-		// if(m_renderer == null){
-		// 	m_renderer = GetComponent<Renderer>();
-		// }
 		m_renderer.material.color = m_isWall ? WALLCOLOUR : FLOORCOLOUR;
 	}
 	// Update is called once per frame
