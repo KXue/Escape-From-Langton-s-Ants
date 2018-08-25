@@ -15,9 +15,9 @@ public class CellularMap : MonoBehaviour {
 	private RepeatingRule [] m_repeatingRules = {new RepeatingRule()};
 	// Use this for initialization
 	void Awake () {
-		Reset();
+		ResetGame();
 	}
-	public void Reset(){
+	public void ResetGame(){
         foreach (Transform child in transform)
         {
             GameObject.Destroy(child.gameObject);
