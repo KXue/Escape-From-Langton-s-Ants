@@ -6,7 +6,7 @@ public enum CardinalDirections {RIGHT, UP, LEFT, DOWN, END}
 public class Helper{
 	// right, up, left, down (screen coordinates)
 	public static int[][] DIRECTIONS = {new int[]{1, 0}, new int[]{0, -1}, new int[]{-1, 0}, new int[]{0, 1}};
-	public static bool MapValue(bool[][] map, int row, int col, bool wrap){
+	public static bool MapValue(bool[][] map, ref int row, ref int col, bool wrap){
 		if(wrap){
 			GetWrappedCoordinates(map, ref row, ref col);
 			return map[row][col];
@@ -39,7 +39,9 @@ public class Helper{
 		int count = 0;
 		for(int rowOffset = -radius; rowOffset <= radius; rowOffset++){
 			for(int colOffset = -radius; colOffset <= radius; colOffset++){
-				if((rowOffset != 0 || colOffset != 0) && MapValue(map, row + rowOffset, col + colOffset, wrap)){
+				int newRow = row + rowOffset;
+				int newCol = col + colOffset;
+				if((rowOffset != 0 || colOffset != 0) && MapValue(map, ref newRow, ref newCol, wrap)){
 					count++;
 				}
 			}
@@ -86,7 +88,7 @@ public class Helper{
 		return area;
 	}
 	public static void FloodFillMap(bool [][] map, int row, int col, bool[][] travelled, ref int count, bool wrap){
-		if(Helper.MapValue(map, row, col, wrap) || Helper.MapValue(travelled, row, col, wrap)){
+		if(Helper.MapValue(map, ref row, ref col, wrap) || Helper.MapValue(travelled, ref row, ref col, wrap)){
 			return;
 		}else{
 			Helper.SetMapValue(travelled, ref row, ref col, wrap, true);
@@ -109,4 +111,20 @@ public class Helper{
 			}
 		}
 	}
+    public static void FindFurthestPoints(Vector3[] points, out Vector3 firstPoint, out Vector3 secondPoint)
+    {
+		firstPoint = points[0];
+		secondPoint = points[1];
+		float biggestDistance = 0f;
+		for(int i = 0; i < points.Length - 1; i++){
+			for(int j = i + 1; j < points.Length; j++){
+				float distance = Vector3.Distance(points[i], points[j]);
+				if(distance > biggestDistance){
+					biggestDistance = distance;
+					firstPoint = points[i];
+					secondPoint = points[j];
+				}
+			}
+		}
+    }
 }

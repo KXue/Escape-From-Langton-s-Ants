@@ -14,9 +14,16 @@ public class CellularMap : MonoBehaviour {
 	private HashSet<Vector3> previousSpawnPoints;
 	private RepeatingRule [] m_repeatingRules = {new RepeatingRule()};
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+		Reset();
+	}
+	public void Reset(){
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
 		previousSpawnPoints = new HashSet<Vector3>();
-		InitializeMap();
+        InitializeMap();
 	}
 	void InitializeMap(){
 		do{
@@ -90,10 +97,10 @@ public class CellularMap : MonoBehaviour {
 		col = Mathf.RoundToInt((worldPosition.x - widthOffset) / m_tileSize);
 		row = Mathf.RoundToInt(-(worldPosition.z - heightOffset) / m_tileSize);
 	}
-	public bool GetTileState(int row, int col){
-		return Helper.MapValue(m_map, row, col, m_wrap);
+	public bool GetTileState(ref int row, ref int col){
+		return Helper.MapValue(m_map, ref row, ref col, m_wrap);
 	}
-	public void SetTileState(int row, int col, bool value){
+	public void SetTileState(ref int row, ref int col, bool value){
 		Helper.SetMapValue(m_map, ref row, ref col, m_wrap, value);
 		m_tiles[row][col].IsWall = value;
 	}
