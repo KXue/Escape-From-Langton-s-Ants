@@ -9,7 +9,7 @@ public class CellularMap : MonoBehaviour {
 	public float m_wallPercent;
 	public Tile m_tilePrefab;
 	public GameObject m_hidePlanePrefab;
-	private bool [][] m_map;
+	private bool [][] m_walls;
 	private Tile [][] m_tiles;
 	private HashSet<Vector3> previousSpawnPoints;
 	private RepeatingRule [] m_repeatingRules = {new RepeatingRule()};
@@ -33,23 +33,23 @@ public class CellularMap : MonoBehaviour {
 			firstRule.repeatCount = 1;
 			firstRule.m_rule = new CaveRule();
 			firstRule.m_rule.m_wrap = m_wrap;
-			m_map = firstRule.ApplyRuleRepeatedly(m_map);
+			m_walls = firstRule.ApplyRuleRepeatedly(m_walls);
 
 			RepeatingRule secondRule = new RepeatingRule();
 			secondRule.repeatCount = 4;
 			secondRule.m_rule = new CaveRule();
 			secondRule.m_rule.m_wrap = m_wrap;
-			m_map = secondRule.ApplyRuleRepeatedly(m_map);
+			m_walls = secondRule.ApplyRuleRepeatedly(m_walls);
 
-		}while(!Helper.IsMapValid(m_map, m_wrap));
+		}while(!Helper.IsMapValid(m_walls, m_wrap));
 		CreateTiles();
 	}
 	void CreateRandomMap(){
-		m_map = new bool[m_height][];
+		m_walls = new bool[m_height][];
 		for(int row = 0; row < m_height; row++){
-			m_map[row] = new bool[m_width];
+			m_walls[row] = new bool[m_width];
 			for(int col = 0; col < m_width; col++){
-				m_map[row][col] = Random.Range(0, 100) < m_wallPercent;
+				m_walls[row][col] = Random.Range(0, 100) < m_wallPercent;
 			}
 		}
 	}
@@ -59,9 +59,9 @@ public class CellularMap : MonoBehaviour {
 		
 		HashSet<Vector3> points = new HashSet<Vector3>();
 
-		for(int row = 0; row < m_map.Length; row++){
-			for(int col = 0; col < m_map[row].Length; col++){
-				if(!m_map[row][col]){
+		for(int row = 0; row < m_walls.Length; row++){
+			for(int col = 0; col < m_walls[row].Length; col++){
+				if(!m_walls[row][col]){
 					floorTiles.Add(GridToWorld(row, col));
 				}
 			}
@@ -85,7 +85,7 @@ public class CellularMap : MonoBehaviour {
 		float heightOffset = m_height * (m_tileSize * 0.5f);
 
 		if(m_wrap){
-			Helper.GetWrappedCoordinates(m_map, ref row, ref col);
+			Helper.GetWrappedCoordinates(m_walls, ref row, ref col);
 		}
 
 		return new Vector3(widthOffset + col * m_tileSize, 0f, heightOffset - row * m_tileSize);
@@ -98,10 +98,10 @@ public class CellularMap : MonoBehaviour {
 		row = Mathf.RoundToInt(-(worldPosition.z - heightOffset) / m_tileSize);
 	}
 	public bool GetTileState(ref int row, ref int col){
-		return Helper.MapValue(m_map, ref row, ref col, m_wrap);
+		return Helper.MapValue(m_walls, ref row, ref col, m_wrap);
 	}
 	public void SetTileState(ref int row, ref int col, bool value){
-		Helper.SetMapValue(m_map, ref row, ref col, m_wrap, value);
+		Helper.SetMapValue(m_walls, ref row, ref col, m_wrap, value);
 		m_tiles[row][col].IsWall = value;
 	}
 	void CreateTiles(){	
@@ -113,7 +113,7 @@ public class CellularMap : MonoBehaviour {
 			m_tiles[row] = new Tile[m_width];
 			for(int col = 0; col < m_width; col++){
 				Tile newTile = Instantiate(m_tilePrefab, GridToWorld(row, col), Quaternion.identity, transform);
-				newTile.IsWall = m_map[row][col];
+				newTile.IsWall = m_walls[row][col];
 				m_tiles[row][col] = newTile;
 			}
 		}
@@ -121,7 +121,7 @@ public class CellularMap : MonoBehaviour {
 	void UpdateTiles(){
 		for(int row = 0; row < m_tiles.Length; row++){
 			for(int col = 0; col < m_tiles[row].Length; col++){
-				m_tiles[row][col].IsWall = m_map[row][col];
+				m_tiles[row][col].IsWall = m_walls[row][col];
 			}
 		}
 	}

@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviour {
 		Vector3 playerSpawnPoint, exitSpawnPoint;
 
 		Helper.FindFurthestPoints(spawnPoints, out playerSpawnPoint, out exitSpawnPoint);
-
+		// playerSpawnPoint = spawnPoints[0];
+		// exitSpawnPoint = spawnPoints[1];
 		m_player = Instantiate(m_playerPrefab, playerSpawnPoint, Quaternion.identity);
 		m_player.m_map = m_map;
 
